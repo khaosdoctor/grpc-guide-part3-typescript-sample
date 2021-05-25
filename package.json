@@ -1,0 +1,32 @@
+{
+  "name": "grpc-guide-part3-typescript-sample",
+  "version": "1.0.0",
+  "description": "Example repository for my \"Guide to gRPC Series\"",
+  "main": "index.js",
+  "scripts": {
+    "compile": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./proto --grpc_out=grpc_js:./proto -I ./proto ./proto/*.proto && grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=grpc_js:./proto -I ./proto ./proto/*.proto",
+    "start:server": "tsc && node dist/server.js",
+    "client": "tsc && node dist/client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khaosdoctor/grpc-guide-part3-typescript-sample.git"
+  },
+  "keywords": [],
+  "author": "Lucas Santos <hello@lsantos.dev> (https://info.lsantos.dev/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/khaosdoctor/grpc-guide-part3-typescript-sample/issues"
+  },
+  "homepage": "https://github.com/khaosdoctor/grpc-guide-part3-typescript-sample#readme",
+  "devDependencies": {
+    "@types/long": "^4.0.1",
+    "@types/node": "^15.6.1",
+    "grpc_tools_node_protoc_ts": "^5.2.2",
+    "grpc-tools": "^1.11.1",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.3.2"
+  }
+}

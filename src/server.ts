@@ -1,6 +1,7 @@
-import { sendUnaryData, Server, ServerCredentials, ServerUnaryCall, UntypedHandleCall } from '@grpc/grpc-js'
+import { promisify } from 'util'
 import { INotesServer, NotesService } from '../proto/notes_grpc_pb'
 import { Note, NoteFindRequest, NoteFindResponse, NoteListResponse, Void } from '../proto/notes_pb'
+import { sendUnaryData, Server, ServerCredentials, ServerUnaryCall, UntypedHandleCall } from '@grpc/grpc-js'
 
 const notes: Note.AsObject[] = [
   { id: 1, title: 'Note 1', description: 'Content 1' },
@@ -33,8 +34,11 @@ class NotesServer implements INotesServer {
 const server = new Server()
 server.addService(NotesService, new NotesServer())
 
-server.bindAsync('0.0.0.0:50052', ServerCredentials.createInsecure(), (err, port) => {
-  if (err) throw err
-  console.log(`listening on ${port}`)
-  server.start()
-})
+const bindPromise = promisify(server.bindAsync).bind(server)
+
+bindPromise('0.0.0.0:50052', ServerCredentials.createInsecure())
+  .then((port) => {
+    console.log(`listening on ${port}`)
+    server.start()
+  })
+  .catch(console.error)
